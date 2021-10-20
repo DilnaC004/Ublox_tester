@@ -4,6 +4,6 @@
     "ntrip_sever": "195.245.209.181",
     "ntrip_port": 2101,
     "ntrip_mountpoint": "CPRG3-MSM",
-    "ntrip_user": "cvutvyuka",
-    "ntrip_password": "k155dremejakokone"
+    "ntrip_user": "",
+    "ntrip_password": ""
 }
