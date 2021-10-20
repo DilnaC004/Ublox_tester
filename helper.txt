@@ -1,0 +1,45 @@
+import serial
+
+ser = serial.Serial('COM6', baudrate=38400, timeout=1)
+msg_gps_out = b'\xB5\x62\x06\x8A\x4F\x00\x01\x01\x00\x00\x01\x00\x31\x10\x01\x03\x00\x31\x10\x01\x07\x00\x31\x10\x01\x0A\x00\x31\x10\x01\x0D\x00\x31\x10\x01\x0E\x00\x31\x10\x01\x12\x00\x31\x10\x01\x15\x00\x31\x10\x01\x18\x00\x31\x10\x01\x1A\x00\x31\x10\x01\x1F\x00\x31\x10\x00\x21\x00\x31\x10\x01\x22\x00\x31\x10\x01\x24\x00\x31\x10\x01\x25\x00\x31\x10\x01\xF2\xD6'
+msg_gps_only = b'\xB5\x62\x06\x8A\x4F\x00\x01\x01\x00\x00\x01\x00\x31\x10\x01\x03\x00\x31\x10\x01\x07\x00\x31\x10\x01\x0A\x00\x31\x10\x01\x0D\x00\x31\x10\x01\x0E\x00\x31\x10\x01\x12\x00\x31\x10\x01\x15\x00\x31\x10\x01\x18\x00\x31\x10\x01\x1A\x00\x31\x10\x01\x1F\x00\x31\x10\x01\x21\x00\x31\x10\x00\x22\x00\x31\x10\x00\x24\x00\x31\x10\x00\x25\x00\x31\x10\x00\xEF\xC9'
+
+
+def run():
+
+    try:
+        ser.write(msg_gps_only)
+    except Exception as ex:
+        print(ex)
+
+
+if _name_ == '_main_':
+    run()
+
+
+
+
+
+import socket
+import serial
+
+ser = serial.Serial('COM6', baudrate=38400, timeout=1)
+
+HOST = '195.245.209.181'  # The server's hostname or IP address
+PORT = 2101        # The port used by the server
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
+    #s.sendall(b"GET / HTTP/1.0\r\nHost:195.245.209.181\r\nUser-Agent: NTRIPClient for Arduino v1.0\r\nConnection: close\r\n\r\n")
+    s.sendall(b'GET /CPRG3-MSM HTTP/1.0\r\nHost:195.245.209.181\r\nUser-Agent: NTRIPClient for Arduino v1.0\r\nAuthorization: Basic Y3Z1dHZ5dWthOmsxNTVkcmVtZWpha29rb25l\r\n\r\n')
+    while True:
+        data = s.recv(1024)
+        if not data:
+            break
+        ser.write(data)
+
+        while ser.in_waiting:
+
+            nmea = ser.readline()
+            if nmea[0:6] == b'$GNGGA' or nmea[0:6] == b'$GNGST':
+                print(nmea)
