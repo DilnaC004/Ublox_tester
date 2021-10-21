@@ -1,11 +1,13 @@
-from __future__ import with_statement
 import socket
-from time import time
 import serial
 import base64
 import json
-import time
-from multiprocessing import Process
+import os
+import logging
+
+from serial.serialwin32 import Serial
+
+log = logging.getLogger(__name__)
 
 
 class Ntrip:
@@ -18,10 +20,15 @@ class Ntrip:
         self._ntrip_access = self.get_access_string()
         self._serial_port = port
 
-    def start(self):
+        log.info('NTRIP imported')
 
-        proc = Process(target=self.connect_server())
-        proc.start()
+    def run(self):
+
+        while True:
+            try:
+                self.connect_server()
+            except Exception as er:
+                logging.exception(er)
 
     def connect_server(self):
 
@@ -34,10 +41,15 @@ class Ntrip:
 
                 if not received_data:
                     print("breaking")
-                    print(received_data)
                     break
+
                 print(received_data)
-                # self._serial_port.write(received_data)
+
+                # check serial for debug output
+                if type(self._serial_port) == serial.Serial:
+                    self._serial_port.write(received_data)
+                else:
+                    print(received_data)
 
     def get_access_string(self):
         auth = "{}:{}".format(
@@ -54,19 +66,16 @@ class Ntrip:
 
 if __name__ == "__main__":
 
-    conf = {"gnss_port": "",
-            "gnss_baudrate": 38400,
-            "ntrip_server": "195.245.209.181",
-            "ntrip_port": 2101,
-            "ntrip_mountpoint": "CPRG3-MSM",
-            "ntrip_user": "****",
-            "ntrip_password": "*****"}
-    print(conf)
-    #serr = serial.Serial('COM6', baudrate=38400, timeout=1)
-    ntrip = Ntrip(conf, [])
+    """Testing NTRIP function"""
 
-    ntrip.start()
+    config_path = "configuration.json"
 
-    while True:
-        print("HELLO")
-        time.sleep(1)
+    if not os.path.exists(config_path):
+        logging.exception(
+            'Configuration file "{}" doesnt exist.'.format(config_path))
+
+    with open(config_path) as file:
+        conf = json.load(file)
+
+    ntrip = Ntrip(conf, None)
+    ntrip.run()
