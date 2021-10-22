@@ -1,0 +1,12 @@
+2021-10-22 10:00:04,537 ntrip NTRIP imported
+2021-10-22 10:00:04,540 ntrip Connecting to ntrip
+2021-10-22 10:00:04,897 gnss 'utf-8' codec can't decode byte 0xb5 in position 0: invalid start byte
+Traceback (most recent call last):
+  File "D:\Skola\Doktorske_studium\Ublox_tester\gnss.py", line 46, in run
+    data = self._serial.readline().decode('utf-8').strip()
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xb5 in position 0: invalid start byte
+2021-10-22 10:04:42,934 gnss 'utf-8' codec can't decode byte 0xb5 in position 0: invalid start byte
+Traceback (most recent call last):
+  File "D:\Skola\Doktorske_studium\Ublox_tester\gnss.py", line 46, in run
+    data = self._serial.readline().decode('utf-8').strip()
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xb5 in position 0: invalid start byte

@@ -26,6 +26,7 @@ class Ntrip:
 
         while True:
             try:
+                log.info("Connecting to ntrip")
                 self.connect_server()
             except Exception as er:
                 logging.exception(er)
@@ -40,10 +41,8 @@ class Ntrip:
                 received_data = s.recv(1024)
 
                 if not received_data:
-                    print("breaking")
+                    log.info("Ntrip server disconnected")
                     break
-
-                print(received_data)
 
                 # check serial for debug output
                 if type(self._serial_port) == serial.Serial:

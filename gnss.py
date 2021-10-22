@@ -20,7 +20,7 @@ class Gnss:
         self.output_name = "init.log"
         self.count_of_fix = 0
         self.fix_count_requested = configuration["nmea_fix_count_requested"]
-        self.current_gnss_index = -1  # starting at index 0
+        self.current_gnss_index = 4  # starting at index 0
         self.configuration_repetion = 0
 
         self.gnss_configuration = {
@@ -33,8 +33,7 @@ class Gnss:
         }
 
         self.log_dir = self.make_log_dir()
-        self.change_configuration(
-            self.configuration_repetion, self.configuration_repetion)
+        self.change_configuration()
 
     def run(self):
 
@@ -68,8 +67,9 @@ class Gnss:
             elif self.count_of_fix == self.fix_count_requested:
                 self.write_timer_log(
                     "required number {} reached".format(self.fix_count_requested))
+                self.change_configuration()
 
-    def change_configuration(self, gnss_type_index, count_repetion):
+    def change_configuration(self):
 
         config_keys = list(self.gnss_configuration.keys())
 
