@@ -1,5 +1,5 @@
 {
-    "gnss_port": "COM8",
+    "gnss_port": "/dev/ttyACM0",
     "gnss_baudrate": 38400,
     "ntrip_server": "195.245.209.181",
     "ntrip_port": 2101,
