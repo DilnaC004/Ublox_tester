@@ -6,8 +6,6 @@ import os
 import logging
 import time
 
-from serial.serialwin32 import Serial
-
 log = logging.getLogger(__name__)
 
 
