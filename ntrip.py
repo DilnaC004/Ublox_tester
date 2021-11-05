@@ -4,6 +4,7 @@ import base64
 import json
 import os
 import logging
+import time
 
 from serial.serialwin32 import Serial
 
@@ -30,6 +31,8 @@ class Ntrip:
                 self.connect_server()
             except Exception as er:
                 logging.exception(er)
+
+            time.sleep(5)
 
     def connect_server(self):
 
