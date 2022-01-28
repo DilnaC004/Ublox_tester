@@ -190,7 +190,7 @@ class Gnss:
         self.current_gnss_index += 1
 
         if self.current_gnss_index >= len(config_keys):
-            self.current_gnss_index = 1
+            self.current_gnss_index = 0
             self.configuration_repetion += 1
             self.write_repeater_index()
 
